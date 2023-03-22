@@ -12,7 +12,7 @@ router.get(
         }
     )
 );
-
+// Github OAuth Callback
 router.get(
     '/login/oauth2/code/github',
     passport.authenticate(
@@ -22,7 +22,7 @@ router.get(
             failureRedirect: '/login'
         }
     )
-)
+);
 
 // Google OAuth
 router.get(
@@ -34,8 +34,7 @@ router.get(
         }
     )
 );
-
-// Google OAuth
+// Google OAuth Callback
 router.get(
     '/login/oauth2/code/google',
     passport.authenticate(
@@ -55,8 +54,7 @@ router.get(
         {}
     )
 );
-
-// Kakao OAuth
+// Kakao OAuth Callback
 router.get(
     '/login/oauth2/code/kakao',
     passport.authenticate(
