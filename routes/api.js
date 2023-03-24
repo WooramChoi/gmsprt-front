@@ -66,19 +66,16 @@ router.get(
     )
 );
 
-router.get('/search/me', (req, res, next) => {
+router.get('/api/security', (req, res, next) => {
     // req.user 가 null 일 경우, 로그인이 되지 않은 경우
-    const currentUser = Object.assign({}, req.user);
+    res.json(Object.assign({}, req.user));
+});
 
-    // 민감한(화면에 불필요한) 데이터들은 제거
-    delete currentUser.googleId;
-    delete currentUser.googleAccessToken;
-    delete currentUser.googleRefreshToken;
-    delete currentUser.kakaoId;
-    delete currentUser.kakaoAccessToken;
-    delete currentUser.kakaoRefreshToken;
-
-    res.json(currentUser);
+router.post('/logout', function(req, res, next){
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 });
 
 module.exports = router;

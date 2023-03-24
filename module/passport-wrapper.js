@@ -45,14 +45,16 @@ function verify(registrationId, accessToken, refreshToken, profile, cb) {
     console.log(`registrationId: ${registrationId}`);
     console.log(`accessToken: ${accessToken}`);
     console.log(`refreshToken: ${refreshToken}`);
+    console.debug('profile:');
     console.debug(profile);
 
     axios.get('http://127.0.0.1:8080/security/login',{
         headers: {
-            'registrationId': registrationId,
-            'accessToken': accessToken
+            'RegistrationId': registrationId,
+            'Authorization': `Bearer ${accessToken}`
         }
     }).then(function(response) {
+        console.debug('response:');
         console.debug(response);
         return cb(null, response.data);
     }).catch(function(error) {

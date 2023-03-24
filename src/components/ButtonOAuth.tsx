@@ -2,8 +2,18 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material/styles';
 
-const ButtonOAuth = (props: any) => {
+interface ButtonOAuthProps {
+    name: string,
+    url: string,
+    sx?: SxProps<Theme>,
+    alt: string,
+    icon: string
+}
+
+const ButtonOAuth = (props: ButtonOAuthProps) => {
     return (
         <Button
             href={props.url}
