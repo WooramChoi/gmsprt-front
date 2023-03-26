@@ -1,7 +1,7 @@
 import * as React from 'react';
 import axios from '../utils/AxiosSingleton';
 
-export interface SecurityProfileVO {
+interface SecurityProfileVO {
     seqUserProfile?: number,
     sid?: string,
     uid?: string,
@@ -10,7 +10,7 @@ export interface SecurityProfileVO {
     urlPicture?: string
 }
 
-export interface SecurityVO {
+interface SecurityVO {
     seqUser?: number,
     name?: string,
     email?: string,
@@ -31,8 +31,6 @@ export const SecurityProvider = ({ children }: { children: React.ReactNode }) =>
     const fetchCurrentUser = () => {
         axios.get('/api/security')
             .then(response => {
-                // console.log('response.data:');
-                // console.log(response.data);
                 setCurrentUser(response.data);
             })
             .catch(error => {

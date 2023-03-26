@@ -78,4 +78,10 @@ router.post('/logout', function(req, res, next){
     });
 });
 
+router.get('/api/testProgress', function(req, res) {
+    setTimeout(function() {
+        res.json({'response': 'ok'});
+    }, 3000);
+});
+
 module.exports = router;

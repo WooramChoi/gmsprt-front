@@ -1,67 +1,61 @@
 import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { SecurityProvider } from './context/SecurityContext';
 import axios from './utils/AxiosSingleton';
+import { useBackdropProgress } from './context/BackdropProgressContext'
 
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Header from './components/Header';
-import BackdropLoading from './components/BackdropLoading';
+import BackdropProgress from './components/BackdropProgress';
 
 import HomePage from './pages/Home/Home';
 import SignInPage from './pages/SignIn/SignIn';
 import NotFoundPage from './pages/errors/404/NotFound';
 
-const theme = createTheme();
-
 const App = () => {
 
-    const [ openBackdropLoading, setOpenBackdropLoading ] = React.useState(false);
+    const { open, changeOpen, progress, changeProgress } = useBackdropProgress();
     // useEffect({function}, [emptyArray]) = componentDidMount = document.ready
     React.useEffect(() => {
 
         // Axios instance 의 interceptor 로 Backdrop - Loading 을 제어하도록함
         axios.interceptors.request.use(function (config) {
-            setOpenBackdropLoading(true);
+            changeProgress(-1);
+            changeOpen(true);
             return config;
         }, function (error) {
-            setOpenBackdropLoading(false);
+            changeOpen(false);
             return Promise.reject(error);
         });
         
         axios.interceptors.response.use(function (response) {
-            setOpenBackdropLoading(false);
+            changeOpen(false);
             return response;
         }, function (error) {
-            setOpenBackdropLoading(false);
+            changeOpen(false);
             return Promise.reject(error);
         });
 
     }, []);
 
     return (
-        <ThemeProvider theme={theme}>
-            <SecurityProvider>
-                <Container component="main">
-                    <CssBaseline />
+        <Container component="main">
+            <CssBaseline />
 
-                    <BackdropLoading open={openBackdropLoading}/>
+            <BackdropProgress open={open} progress={progress}/>
 
-                    <Header />
+            <Header />
 
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/login" element={<SignInPage />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<SignInPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
 
-                    {/* footer */}
+            {/* footer */}
 
-                </Container>
-            </SecurityProvider>
-        </ThemeProvider>
+        </Container>
     );
 }
 
