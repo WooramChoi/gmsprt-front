@@ -2,7 +2,7 @@ const passport = require('passport');
 const GithubStrategy = require('passport-github2').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const KakaoStrategy = require('passport-kakao').Strategy;
-const axios = require('axios');
+const axiosFactory = require('./axios-api-factory');
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -48,15 +48,18 @@ function verify(registrationId, accessToken, refreshToken, profile, cb) {
     console.debug('profile:');
     console.debug(profile);
 
-    axios.get('http://127.0.0.1:8080/security/login',{
-        headers: {
-            'RegistrationId': registrationId,
-            'Authorization': `Bearer ${accessToken}`
-        }
-    }).then(function(response) {
-        console.debug('response:');
-        console.debug(response);
-        return cb(null, response.data);
+    var user = {
+        registrationId: registrationId,
+        accessToken: accessToken,
+        refreshToken: refreshToken
+    };
+
+    var axios = axiosFactory(user);
+
+    axios.get('/security/login')
+    .then(function(response) {
+        user['profile'] = response.data;
+        return cb(null, user);
     }).catch(function(error) {
         console.error(error);
         return cb(error);

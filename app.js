@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const passport = require('./module/passport-wrapper');
-const apiRouter = require('./routes/api');
+const apiRouter = require('./routes/api-router');
+const securityRouter = require('./routes/security');
 
 const app = express();
 
@@ -29,7 +30,8 @@ app.use(session({
 app.use(passport.initialize({}));
 app.use(passport.session({}));
 
-app.use('/', apiRouter);
+app.use('/', securityRouter);
+app.use('/api', apiRouter);
 
 // SPA 목적으로, 모든 요청에 대해 index.html 을 렌더링
 app.use(function(req, res, next) {

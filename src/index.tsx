@@ -11,7 +11,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const theme = createTheme();
+const theme = createTheme({
+    // TODO user 별 theme 적용
+    // palette: {
+    //     mode: 'dark',
+    // }
+});
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

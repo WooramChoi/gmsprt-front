@@ -3,7 +3,7 @@ import * as React from 'react';
 export const BackdropProgressContext = React.createContext({
     open: false,
     changeOpen: (open: boolean) => {},
-    progress: 0,
+    progress: -1,
     changeProgress: (progress: number) => {}
 });
 
@@ -14,7 +14,7 @@ export const BackdropProgressProvider = ({ children }: { children: React.ReactNo
         setOpen(open);
     }
 
-    const [ progress, setProgress ] = React.useState(0);
+    const [ progress, setProgress ] = React.useState(-1);
     const changeProgress = (progress: number) => {
         setProgress(progress);
     }

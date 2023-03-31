@@ -3,8 +3,7 @@ import { useCurrentUser } from '../../context/SecurityContext';
 
 const Home = () => {
 
-    const { currentUser, fetchCurrentUser } = useCurrentUser();
-    React.useEffect(() => fetchCurrentUser(), [] );
+    const { currentUser } = useCurrentUser();
 
     return (
         <>

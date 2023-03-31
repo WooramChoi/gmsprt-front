@@ -66,22 +66,20 @@ router.get(
     )
 );
 
-router.get('/api/security', (req, res, next) => {
+// get currentUser
+router.get('/security', (req, res, next) => {
     // req.user 가 null 일 경우, 로그인이 되지 않은 경우
-    res.json(Object.assign({}, req.user));
+    var user = req.user;
+    if (!user) { user = { profile: {} }; }
+    res.json(Object.assign({}, user.profile));
 });
 
+// logout
 router.post('/logout', function(req, res, next){
     req.logout(function (err) {
         if (err) { return next(err); }
         res.redirect('/');
     });
-});
-
-router.get('/api/testProgress', function(req, res) {
-    setTimeout(function() {
-        res.json({'response': 'ok'});
-    }, 3000);
 });
 
 module.exports = router;

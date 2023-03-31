@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useCurrentUser } from '../context/SecurityContext';
-import { useBackdropProgress } from "../context/BackdropProgressContext";
 import { useNavigate } from 'react-router-dom';
 import axios from '../utils/AxiosSingleton';
 
@@ -72,10 +71,6 @@ const Header = () => {
 
     const { currentUser, fetchCurrentUser } = useCurrentUser();
 
-    React.useEffect(() => {
-        fetchCurrentUser();
-    }, []);
-
     // Drawer
     const [state, setState] = React.useState({
         drawer: false
@@ -108,7 +103,6 @@ const Header = () => {
     }
 
     const menuProfile = () => {
-        // TODO logout 은 POST 로 작성해야함
         if (currentUser.seqUser) {
             return (
                 <>
@@ -150,33 +144,6 @@ const Header = () => {
             console.log('error');
             console.error(error);
         });
-    }
-
-    const { changeOpen, changeProgress } = useBackdropProgress();
-    const testProgress = () => {
-        axios.get('/api/testProgress')
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch(console.error);
-    }
-    const testProgress2 = () => {
-        changeOpen(true);
-        changeProgress(0);
-        setTimeout(() => {
-            testCount(0);
-        }, 500);
-    }
-    const testCount = (cnt: number) => {
-        cnt += 10;
-        changeProgress(cnt);
-        if (cnt > 100) {
-            changeOpen(false);
-        } else {
-            setTimeout(() => {
-                testCount(cnt);
-            }, 500);
-        }
     }
 
     return (
@@ -235,18 +202,8 @@ const Header = () => {
                         noWrap
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                        onClick={testProgress}
                     >
                         MUI
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                        onClick={testProgress2}
-                    >
-                        TEST2
                     </Typography>
 
                     <Search>

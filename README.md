@@ -1,3 +1,84 @@
+# 프로젝트 구조
+
+    크게 Node-Express 와 create-react-app 두 개의 내용으로 구성된다.
+
+    React App 의 build 결과물은 build 폴더에 담기게 되고,
+
+    Express server 는 build 폴더를 리소스(기본 public) 폴더로 사용하여 구동된다.
+    (관리의 용이함을 위해 한 프로젝트로 구성한 결과이다)
+
+
+## Node-Express
+---------------
+
+### bin/www, app.js
+
+    express 서버 기본 구성요소
+
+### module/**
+
+    express 서버에서 공통으로 사용하는 모듈
+
+### routes/**
+
+    express 서버 라우터
+
+
+## React App
+------------
+
+### @types
+
+    typescript 가 해당 위치에 설정된 내용에 따라 추가 type 을 인식하도록 함. ex) png 파일
+
+### tsconfig.json
+
+    typescript 빌드를 위한 properties 파일
+
+### public/**
+
+    React static 파일
+
+### src/assets/**
+
+    React 가 참조할 모든 리소스 파일
+
+### src/components/**
+
+    React Components
+    화면 구성요소 단위로 분리된 파일들
+
+### src/context/**
+
+    React Contexts
+    Components 들 사이에서 공유되어야할 데이터 모음집
+
+### src/data/**
+
+    React 설정 json 파일들
+
+### src/hooks/**
+
+    Custom Hooks 파일들
+
+### src/pages/**
+
+    react-router-dom 에 의해 그려질 페이지 컨테이너
+
+### src/utils/**
+
+    Javascript(Typescript) 단위의 유틸 파일들
+
+### src/index.tsx
+
+    React App 이 참조할 Context-Provider 를 적용
+
+### src/App.tsx
+
+    React App 의 화면 메인
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

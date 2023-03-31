@@ -29,7 +29,7 @@ export const SecurityProvider = ({ children }: { children: React.ReactNode }) =>
     const [ currentUser, setCurrentUser ] = React.useState<SecurityVO>({} as SecurityVO)
 
     const fetchCurrentUser = () => {
-        axios.get('/api/security')
+        axios.get('/security')
             .then(response => {
                 setCurrentUser(response.data);
             })

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useBackdropProgress } from '../context/BackdropProgressContext';
+
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -14,12 +16,20 @@ interface ButtonOAuthProps {
 }
 
 const ButtonOAuth = (props: ButtonOAuthProps) => {
+
+    const { changeOpen } = useBackdropProgress();
+    const handleUrl = () => {
+        changeOpen(true);
+        window.location.href = props.url;
+    }
+
     return (
         <Button
-            href={props.url}
+            // href={props.url}
             fullWidth
             variant='outlined'
             sx={props.sx}
+            onClick={handleUrl}
         >
             <Box
                 component="img"

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import axios from './utils/AxiosSingleton';
-import { useBackdropProgress } from './context/BackdropProgressContext'
+import { useCurrentUser } from './context/SecurityContext';
+import { useBackdropProgress } from './context/BackdropProgressContext';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
@@ -11,13 +12,19 @@ import BackdropProgress from './components/BackdropProgress';
 
 import HomePage from './pages/Home/Home';
 import SignInPage from './pages/SignIn/SignIn';
+import BoardForm from './pages/Board/BoardForm';
 import NotFoundPage from './pages/errors/404/NotFound';
 
 const App = () => {
 
+    const { fetchCurrentUser } = useCurrentUser();
     const { open, changeOpen, progress, changeProgress } = useBackdropProgress();
+
     // useEffect({function}, [emptyArray]) = componentDidMount = document.ready
     React.useEffect(() => {
+
+        // 로그인된 유저 확인
+        fetchCurrentUser();
 
         // Axios instance 의 interceptor 로 Backdrop - Loading 을 제어하도록함
         axios.interceptors.request.use(function (config) {
@@ -50,6 +57,8 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<SignInPage />} />
+                <Route path="/boards/:seqBoard" element={<div>Test...</div>} />
+                <Route path="/boards/:seqBoard/form" element={<BoardForm />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
 
