@@ -3,6 +3,8 @@ const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+/* 개발편의를 위한것 / 삭제해야함 */
+const cors = require('cors');
 
 const passport = require('./module/passport-wrapper');
 const apiRouter = require('./routes/api-router');
@@ -15,6 +17,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
+/* 개발편의를 위한것 / 삭제해야함 */
+app.use(cors());
 
 app.use(session({
     key: 'sid',

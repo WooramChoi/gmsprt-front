@@ -1,7 +1,6 @@
-import axios from 'axios';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 
-const instance = axios.create();
+const instance = axios.create({baseURL: 'http://127.0.0.1:3001/'});
 
 export const handleErrors = (error: AxiosError) => {
     if (error.response) {

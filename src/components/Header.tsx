@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { useCurrentUser } from '../context/SecurityContext';
-import { useNavigate } from 'react-router-dom';
-import axios from '../utils/AxiosSingleton';
+import { useNavigate, Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { currentUserState, SecurityActions } from '../utils/SecurityUtils';
 
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -67,9 +67,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+const StyledLink = styled(Link)(({ theme }) => ({
+    color: 'inherit',
+    textDecoration: 'inherit'
+}));
+
 const Header = () => {
 
-    const { currentUser, fetchCurrentUser } = useCurrentUser();
+    const currentUser = useRecoilValue(currentUserState);
+    const { fetchCurrentUser, logout } = SecurityActions();
 
     // Drawer
     const [state, setState] = React.useState({
@@ -135,15 +141,8 @@ const Header = () => {
     }
 
     const handleSignOut = () => {
-        axios.post('/logout')
-        .then((response) => {
-            console.log('logout done');
-            fetchCurrentUser();
-        })
-        .catch((error) => {
-            console.log('error');
-            console.error(error);
-        });
+        handleMenuClose();
+        logout();
     }
 
     return (
@@ -203,7 +202,9 @@ const Header = () => {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
-                        MUI
+                        <StyledLink to='/'>
+                            MUI
+                        </StyledLink>
                     </Typography>
 
                     <Search>

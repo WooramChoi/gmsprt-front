@@ -39,15 +39,15 @@ router.all('/*', (req, res, next) => {
             console.error(error.response.status);
             console.error(error.response.data);
 
-            res.json(error.response.data);
+            res.status(error.response.status).json(error.response.data);
         } else if (error.request) {
             console.error(error.request);
 
-            res.json(error.request);
+            res.status(500).json(error.request);
         } else {
             console.error(error.message);
 
-            res.json({message: error.message});
+            res.status(500).json({message: error.message});
         }
     });
 });

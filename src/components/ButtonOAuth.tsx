@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useBackdropProgress } from '../context/BackdropProgressContext';
+import { useSetRecoilState } from 'recoil';
+import { openBackdropProgress } from '../components/BackdropProgress';
 
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -17,15 +18,14 @@ interface ButtonOAuthProps {
 
 const ButtonOAuth = (props: ButtonOAuthProps) => {
 
-    const { changeOpen } = useBackdropProgress();
+    const setOpen = useSetRecoilState(openBackdropProgress);
     const handleUrl = () => {
-        changeOpen(true);
+        setOpen(true);
         window.location.href = props.url;
     }
 
     return (
         <Button
-            // href={props.url}
             fullWidth
             variant='outlined'
             sx={props.sx}

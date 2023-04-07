@@ -1,15 +1,28 @@
 import * as React from 'react';
-import { useCurrentUser } from '../../context/SecurityContext';
+import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button'
 
 const Home = () => {
 
-    const { currentUser } = useCurrentUser();
+    const navigate = useNavigate();
+
+    const handleLink = () => {
+        navigate('/boards');
+    }
 
     return (
         <>
-            <span>Hello, World!</span>
-            <br/>
-            <span>name:</span><span>{currentUser.name}</span>
+            <p>
+                <span>Hello, World!</span>
+            </p>
+            <p>
+                <Button
+                    variant='outlined'
+                    onClick={handleLink}
+                >
+                    게시판
+                </Button>
+            </p>
         </>
     );
 }

@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { SecurityProvider } from './context/SecurityContext';
-import { BackdropProgressProvider } from "./context/BackdropProgressContext";
+import { RecoilRoot } from 'recoil';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -23,13 +22,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <BrowserRouter>
-        <SecurityProvider>
+        <RecoilRoot>
             <ThemeProvider theme={theme}>
-                <BackdropProgressProvider>
-                    <App />
-                </BackdropProgressProvider>
+                <App />
             </ThemeProvider>
-        </SecurityProvider>
+        </RecoilRoot>
     </BrowserRouter>
 );
 

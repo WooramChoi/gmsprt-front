@@ -1,7 +1,6 @@
 import * as React from 'react';
-import axios from '../../utils/AxiosSingleton';
-import { handleErrors } from '../../utils/AxiosSingleton';
-import { useParams } from 'react-router-dom';
+import axios, { handleErrors } from '../../utils/AxiosSingleton';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -20,17 +19,13 @@ const BoardForm = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => { event.preventDefault(); };
 
     const params = useParams();
-    const [seqBoard, setSeqBoard] = React.useState(0);
+    const navigate = useNavigate();
+    const [seqBoard, setSeqBoard] = React.useState(() => +params.seqBoard!);
     const [title, setTitle] = React.useState('');
+    // TODO 로그인된 유저는 이름과 비밀번호란이 필요없다. 그래도 이름은 히스토리성으로 남겨둘까?
     const [name, setName] = React.useState('');
     const [pwd, setPwd] = React.useState('');
     const [content, setContent] = React.useState('');
-
-    React.useEffect(() => {
-        console.log('useEffect, default');
-        setSeqBoard(+params.seqBoard!);
-        console.log(`seqBoard: ${seqBoard}`);
-    }, [])
 
     React.useEffect(() => {
         console.log(`useEffect, seqBoard change: ${seqBoard}`);
@@ -65,10 +60,13 @@ const BoardForm = () => {
 
         axios(config)
         .then((response) => {
-            setSeqBoard(response.data.seqBoard);
+            //setSeqBoard(response.data.seqBoard);
+            navigate(`/boards/${response.data.seqBoard}/form`);
         })
         .catch((error) => {
             if (error.response) {
+                // TODO textfield 에 validation 보여주기
+                // TODO snackbar 보여주기
                 console.error(error.response.status);
                 console.error(error.response.data);
             } else if (error.request) {
@@ -89,12 +87,11 @@ const BoardForm = () => {
             action='/api/boards'
             onSubmit={handleOnSubmit}
         >
-            <input type='hidden' id='seqBoard' name='seqBoard' value={seqBoard} />
             <Grid container>
                 <Grid item md={4} sm={12} xs={12} sx={{ p: 1 }}>
                     <FormControl variant="outlined" fullWidth>
                         <TextField
-                            id='idTitle'
+                            id='title'
                             name='title'
                             label='제목'
                             value={title}
@@ -107,7 +104,7 @@ const BoardForm = () => {
                 <Grid item md={4} sm={6} xs={12} sx={{ p: 1 }}>
                     <FormControl variant="outlined" fullWidth>
                         <TextField
-                            id='idName'
+                            id='name'
                             name='name'
                             label='이름'
                             value={name}
@@ -121,7 +118,7 @@ const BoardForm = () => {
                     <FormControl variant="outlined" fullWidth>
                         <TextField
                             type={showPassword ? 'text' : 'password'}
-                            id='idPwd'
+                            id='pwd'
                             name='pwd'
                             label='비밀번호'
                             value={pwd}
@@ -148,7 +145,7 @@ const BoardForm = () => {
                 <Grid item xs={12} sx={{ p: 1 }}>
                     <FormControl variant="outlined" fullWidth>
                         <TextField
-                            id='idContent'
+                            id='content'
                             name='content'
                             label='내용'
                             value={content}
