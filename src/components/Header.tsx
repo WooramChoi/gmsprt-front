@@ -100,30 +100,24 @@ const Header = () => {
     const menuId = 'primary-search-account-menu';
     const navigate = useNavigate();
 
-    const avatarProfile = () => {
-        if (currentUser.urlPicture) {
-            return <Avatar alt={currentUser.name} src={currentUser.urlPicture}/>
-        } else {
-            return <AccountCircle />
-        }
+    interface profileMenuItem {
+        handler: React.MouseEventHandler<HTMLLIElement>,
+        text: string
     }
-
     const menuProfile = () => {
+        const profileMenuItems: profileMenuItem[] = [];
         if (currentUser.seqUser) {
-            return (
-                <>
-                    <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-                    <MenuItem onClick={fetchCurrentUser}>My account</MenuItem>
-                    <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-                </>
-            );
+            profileMenuItems.push({ handler: handleMenuClose, text: 'Profile' });
+            profileMenuItems.push({ handler: fetchCurrentUser, text: 'My account' });
+            profileMenuItems.push({ handler: handleSignOut, text: 'Sign Out' });
         } else {
-            return (
-                <>
-                    <MenuItem onClick={handleSignIn}>Sign In</MenuItem>
-                </>
-            )
+            profileMenuItems.push({ handler: handleSignIn, text: 'Sign In' });
         }
+        return (
+            profileMenuItems.map((profileMenuItem, idx) => {
+                return <MenuItem key={'profileMenuItem_'+idx} onClick={profileMenuItem.handler}>{profileMenuItem.text}</MenuItem>
+            })
+        )
     }
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -228,7 +222,10 @@ const Header = () => {
                         onClick={handleProfileMenuOpen}
                         color="inherit"
                     >
-                        {avatarProfile()}
+                        {currentUser.urlPicture
+                            ? <Avatar alt={currentUser.name} src={currentUser.urlPicture}/>
+                            : <AccountCircle />
+                        }
                     </IconButton>
                 </Toolbar>
             </AppBar>

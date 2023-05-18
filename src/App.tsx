@@ -9,6 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
 import BackdropProgress from './components/BackdropProgress';
 
 import HomePage from './pages/Home/Home';
@@ -66,7 +67,7 @@ const App = () => {
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
 
-            {/* footer */}
+            <Footer />
 
         </Container>
     );

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-const instance = axios.create({baseURL: 'http://127.0.0.1:3001/'});
+const instance = axios.create({baseURL: process.env.REACT_APP_BASE_URL});
 
 export const handleErrors = (error: AxiosError) => {
     if (error.response) {

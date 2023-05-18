@@ -28,24 +28,25 @@ const BoardForm = () => {
     const [content, setContent] = React.useState('');
 
     React.useEffect(() => {
-        console.log(`useEffect, seqBoard change: ${seqBoard}`);
-        axios.get(`/api/boards/${seqBoard}`)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
-            setTitle(response.data.title);
-            setName(response.data.name);
-            setPwd('');
-            setContent(response.data.content);
-        })
-        .catch(handleErrors);
+        if (seqBoard > 0) {
+            axios.get(`/api/boards/${seqBoard}`)
+                .then((response) => {
+                    console.log(JSON.stringify(response.data));
+                    setTitle(response.data.title);
+                    setName(response.data.name);
+                    setPwd('');
+                    setContent(response.data.content);
+                })
+                .catch(handleErrors);
+        }
     }, [seqBoard]);
 
     const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         let config = {
-            url: e.currentTarget.action,
-            method: e.currentTarget.method,
+            url: '/api/boards',
+            method: 'post',
             data: {
                 title: title,
                 name: name,
@@ -54,27 +55,27 @@ const BoardForm = () => {
             }
         }
         if (seqBoard > 0) {
-            config['url'] = config['url'] + `/${seqBoard}`;
+            config['url'] = `/api/boards/${seqBoard}`;
             config['method'] = 'patch';
         }
 
         axios(config)
-        .then((response) => {
-            //setSeqBoard(response.data.seqBoard);
-            navigate(`/boards/${response.data.seqBoard}/form`);
-        })
-        .catch((error) => {
-            if (error.response) {
-                // TODO textfield 에 validation 보여주기
-                // TODO snackbar 보여주기
-                console.error(error.response.status);
-                console.error(error.response.data);
-            } else if (error.request) {
-                console.error(error.request);
-            } else {
-                console.error(error.message);
-            }
-        });
+            .then((response) => {
+                //setSeqBoard(response.data.seqBoard);
+                navigate(`/boards/${response.data.seqBoard}/form`);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    // TODO textfield 에 validation 보여주기
+                    // TODO snackbar 보여주기
+                    console.error(error.response.status);
+                    console.error(error.response.data);
+                } else if (error.request) {
+                    console.error(error.request);
+                } else {
+                    console.error(error.message);
+                }
+            });
 
         return false;
     }
