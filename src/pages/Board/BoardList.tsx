@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import axios, { handleErrors } from '../../utils/AxiosSingleton';
 import { dateToString } from '../../utils/DateUtils';
 import { BoardSearch, BoardDetails } from '../../data/models';
@@ -25,73 +25,51 @@ import { Add as AddIcon } from '@mui/icons-material';
 const BoardList = () => {
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const lastSearch = React.useRef('');
-
-    const [boardSearch, setBoardSearch] = React.useState({
-        page: parseInt(searchParams.has('page')? searchParams.get('page')! : '0'),
-        size: parseInt(searchParams.has('size')? searchParams.get('size')! : '12'),
-        name: searchParams.get('name'),
-        toc: searchParams.get('toc'),
-        use: searchParams.has('use')? (searchParams.get('use')! === 'true') : true
-    } as BoardSearch);
+    const [searchParams, setSearchParams] = useSearchParams();
+    if (!searchParams.has('page')) {
+        searchParams.set('page', '0');
+    }
+    if (!searchParams.has('size')) {
+        searchParams.set('size', '6');
+    }
+    const page = parseInt(searchParams.get('page')!);
+    const size = parseInt(searchParams.get('size')!);
+    const name = searchParams.get('name');
+    const toc = searchParams.get('toc');
+    const use = searchParams.get('use');
 
     const [boardList, setBoardList] = React.useState([] as BoardDetails[]);
-    const [page, setPage] = React.useState(0);
     const [totalPages, setTotalPages] = React.useState(1);
 
     React.useEffect(() => {
-
-        console.log('boardSearch changed');
-
-        const params = new URLSearchParams();
-        params.set('page', (boardSearch.page || '0').toString());
-        params.set('size', (boardSearch.size || '12').toString());
-        params.set('name', boardSearch.name || '');
-        params.set('toc', boardSearch.name || '');
-        params.set('use', (boardSearch.use || 'true').toString());
-
-        navigate(`/boards?${params.toString()}`);
-
-    }, [boardSearch, navigate]);
-
-    React.useEffect(() => {
-
-        if (location.search !== '' && location.search !== lastSearch.current) {
-
-            console.log(`location changed: ${location.search}`);
-            lastSearch.current = location.search;
-
-            axios({
-                url: '/api/boards',
-                method: 'get',
-                params: new URLSearchParams(location.search)
-            })
-            .then((response) => {
-                console.log(response.data);
-                setBoardList(response.data.content);
-                setPage(response.data.number);
-                setTotalPages(response.data.totalPages);
-            })
-            .catch((error) => {
-                handleErrors(error);
-            });
-        }
-
-    }, [location]);
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setBoardSearch((prevState) => {
-            return { ...prevState, page: 0 }
+        axios({
+            url: '/api/boards',
+            method: 'get',
+            params: {page: page, size: size}
+        })
+        .then((response) => {
+            console.log(response.data);
+            setBoardList(response.data.content);
+            setTotalPages(response.data.totalPages);
+        })
+        .catch((error) => {
+            handleErrors(error);
         });
-    }
+    }, [page, size]);
 
     const handlePageChange = (e: React.ChangeEvent<unknown>, page: number) => {
-        setBoardSearch((prevState) => {
-            return { ...prevState, page: (page - 1) }
-        });
+        searchParams.set('page', (page-1).toString());
+        setSearchParams(searchParams);
+
+        const anchor = (
+            (e.target as HTMLDivElement).ownerDocument || document
+        ).querySelector('#back-to-top-anchor');
+
+        if (anchor) {
+            anchor.scrollIntoView({
+                block: 'center',
+            });
+        }
     }
 
     const handleCardClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, seqBoard: number) => {
@@ -103,7 +81,7 @@ const BoardList = () => {
     }
 
     return (
-        <Box>
+        <Box id="back-to-top-anchor">
             <Grid container>
                 {boardList.map((boardDetails, idx) => (
                     <Grid key={'boardDetails_' + idx} item xs={12} sm={6} md={4} sx={{ pt: 2, pr: 1,  pb: 2, pl: 1 }}>
@@ -131,7 +109,7 @@ const BoardList = () => {
                 ))}
             </Grid>
             <Stack alignItems={'center'}>
-                <Pagination count={totalPages} page={page! + 1} color="primary" onChange={handlePageChange} />
+                <Pagination count={totalPages} page={page + 1} color="primary" onChange={handlePageChange} />
             </Stack>
             <Fab color='primary' aria-label='add' sx={{ position: 'fixed', bottom: 16, right: 16, }} onClick={handleFabClick}>
                 <AddIcon />
