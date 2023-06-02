@@ -26,6 +26,12 @@ export interface CommDetails {
     dtUpdate: Date;
 }
 
+export interface FieldError {
+    field: string;
+    value: any;
+    reason: string;
+}
+
 export interface BoardSearch extends CommSearch {
     name?: string;
     toc?: string; // title + content

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { currentUserState, SecurityActions } from '../utils/SecurityUtils';
 
@@ -139,6 +139,34 @@ const Header = () => {
         logout();
     }
 
+    // StyledInputBase
+    const [searchParams] = useSearchParams();
+    const inputSearch = React.useRef<HTMLInputElement>(null);
+    React.useEffect(() => {
+        document.addEventListener<'keydown'>('keydown', (event: KeyboardEvent) => {
+            if (event.target !== inputSearch.current) {
+                if (event.key === '/') {
+                    event.preventDefault();
+                    inputSearch.current?.focus();
+                    inputSearch.current?.select();
+                }
+            }
+        });
+    }, []);
+
+    const toc = searchParams.get('toc');
+    const [strSearch, setStrSearch] = React.useState<string>(toc?toc:'');
+    const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        switch(event.key) {
+            case 'Enter': navigate('/boards?toc=' + strSearch); break;
+            case 'Escape': setStrSearch(''); break;
+            default: break;
+        }
+    }
+    const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setStrSearch(event.target.value);
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
 
@@ -206,8 +234,12 @@ const Header = () => {
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
+                            inputRef={inputSearch}
                             placeholder="Search…"
                             inputProps={{ 'aria-label': 'search' }}
+                            value={strSearch}
+                            onChange={handleChangeSearch}
+                            onKeyDown={handleSearch}
                         />
                     </Search>
 

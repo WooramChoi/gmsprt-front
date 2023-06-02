@@ -36,7 +36,6 @@ const BoardList = () => {
     const size = parseInt(searchParams.get('size')!);
     const name = searchParams.get('name');
     const toc = searchParams.get('toc');
-    const use = searchParams.get('use');
 
     const [boardList, setBoardList] = React.useState([] as BoardDetails[]);
     const [totalPages, setTotalPages] = React.useState(1);
@@ -45,17 +44,16 @@ const BoardList = () => {
         axios({
             url: '/api/boards',
             method: 'get',
-            params: {page: page, size: size}
+            params: {page: page, size: size, name: name, toc: toc, use: true, sort: 'seqBoard,desc'}
         })
         .then((response) => {
-            console.log(response.data);
             setBoardList(response.data.content);
             setTotalPages(response.data.totalPages);
         })
         .catch((error) => {
             handleErrors(error);
         });
-    }, [page, size]);
+    }, [page, size, name, toc]);
 
     const handlePageChange = (e: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', (page-1).toString());
@@ -83,7 +81,8 @@ const BoardList = () => {
     return (
         <Box id="back-to-top-anchor">
             <Grid container>
-                {boardList.map((boardDetails, idx) => (
+                {boardList.length > 0
+                ? boardList.map((boardDetails, idx) => (
                     <Grid key={'boardDetails_' + idx} item xs={12} sm={6} md={4} sx={{ pt: 2, pr: 1,  pb: 2, pl: 1 }}>
                         <Card>
                             <CardActionArea
@@ -100,13 +99,14 @@ const BoardList = () => {
                                 <Skeleton variant='rounded' height={200}/>
                                 <CardContent>
                                     <Typography variant='body2'>
-                                        {boardDetails.content?.substring(0, 20)}
+                                        {boardDetails.content?.substring(0, 50)}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
                     </Grid>
-                ))}
+                ))
+                : <Grid item md={12}>Empty</Grid>}
             </Grid>
             <Stack alignItems={'center'}>
                 <Pagination count={totalPages} page={page + 1} color="primary" onChange={handlePageChange} />

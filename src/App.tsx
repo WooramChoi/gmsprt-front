@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import axios from './utils/AxiosSingleton';
 import { useSetRecoilState } from 'recoil';
 import { openBackdropProgress, progressBackdropProgress } from './components/BackdropProgress';
+import axios from './utils/AxiosSingleton';
 import { SecurityActions } from './utils/SecurityUtils';
 
-import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
 
-import Header from './components/Header';
-import Footer from './components/Footer';
 import BackdropProgress from './components/BackdropProgress';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
-import HomePage from './pages/Home/Home';
-import SignInPage from './pages/SignIn/SignIn';
 import BoardForm from './pages/Board/BoardForm';
 import BoardList from './pages/Board/BoardList';
+import HomePage from './pages/Home/Home';
+import SignInPage from './pages/SignIn/SignIn';
 import NotFoundPage from './pages/errors/404/NotFound';
 
 const App = () => {
@@ -48,7 +48,7 @@ const App = () => {
             return Promise.reject(error);
         });
 
-    }, []);
+    }, [fetchCurrentUser, setOpen, setProgress]);
 
     return (
         <Container component="main">
