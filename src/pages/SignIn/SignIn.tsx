@@ -15,16 +15,13 @@ const SignIn = () => {
         <Container maxWidth='sm'>
             <Box
                 sx={{
-                    marginTop: 8,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}
             >
                 <Box>
-                    <Typography variant='subtitle1'>
-                        {'Sign in'}
-                    </Typography>
+                    <Typography variant='subtitle1'>Sign in</Typography>
                 </Box>
                 <Box sx={{ mt: 3, width: '100%' }}>
                     <Stack spacing={2}>

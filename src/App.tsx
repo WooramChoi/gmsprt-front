@@ -12,6 +12,7 @@ import BackdropProgress from './components/BackdropProgress';
 import Footer from './components/Footer';
 import Header from './components/Header';
 
+import BoardView from './pages/Board/BoardView';
 import BoardForm from './pages/Board/BoardForm';
 import BoardList from './pages/Board/BoardList';
 import HomePage from './pages/Home/Home';
@@ -51,25 +52,26 @@ const App = () => {
     }, [fetchCurrentUser, setOpen, setProgress]);
 
     return (
-        <Container component="main">
+        <>
             <CssBaseline />
 
             <BackdropProgress />
 
             <Header />
 
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<SignInPage />} />
-                <Route path="/boards" element={<BoardList />} />
-                <Route path="/boards/:seqBoard" element={<div>Test...</div>} />
-                <Route path="/boards/:seqBoard/form" element={<BoardForm />} />
-                <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <Container component="main" sx={{ mt: 8 }}>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<SignInPage />} />
+                    <Route path="/boards" element={<BoardList />} />
+                    <Route path="/boards/:seqBoard" element={<BoardView />} />
+                    <Route path="/boards/:seqBoard/form" element={<BoardForm />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </Container>
 
             <Footer />
-
-        </Container>
+        </>
     );
 }
 

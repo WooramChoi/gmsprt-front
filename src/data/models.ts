@@ -48,6 +48,16 @@ export interface BoardDetails extends CommDetails {
     user?: UserDetails;
 }
 
+export interface BoardSummary extends CommDetails {
+    seqBoard?: number;
+    title?: string;
+    contentSummary?: string;
+    use?: boolean;
+    name?: string;
+
+    user?: UserDetails;
+}
+
 export interface UserDetails extends CommDetails {
     seqUser?: number;
     name?: string;

@@ -4,12 +4,9 @@ import Box from '@mui/material/Box';
 const Footer = () => {
     return (
         <Box
-            component='div'
-            sx={{
-                height: 200
-            }}
+            component='footer'
+            sx={{ height: 200 }}
         >
-
         </Box>
     );
 }

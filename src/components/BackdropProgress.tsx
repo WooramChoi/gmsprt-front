@@ -15,16 +15,12 @@ export const progressBackdropProgress = atom({
     default: -1
 });
 
-interface ProgressProps extends CircularProgressProps {
-    value: number
-}
-
 const BackdropProgress = () => {
 
     const open = useRecoilValue(openBackdropProgress);
     const progress = useRecoilValue(progressBackdropProgress);
 
-    const progressProps = { color: 'inherit' } as ProgressProps;
+    const progressProps = { color: 'inherit' } as CircularProgressProps;
     if (progress >= 0) {
         progressProps.variant = 'determinate';
         progressProps.value = progress;

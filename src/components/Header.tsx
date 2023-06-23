@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { currentUserState, SecurityActions } from '../utils/SecurityUtils';
 
 import { styled, alpha } from '@mui/material/styles';
@@ -142,33 +143,27 @@ const Header = () => {
     // StyledInputBase
     const [searchParams] = useSearchParams();
     const inputSearch = React.useRef<HTMLInputElement>(null);
-    React.useEffect(() => {
-        document.addEventListener<'keydown'>('keydown', (event: KeyboardEvent) => {
-            if (event.target !== inputSearch.current) {
-                if (event.key === '/') {
-                    event.preventDefault();
-                    inputSearch.current?.focus();
-                    inputSearch.current?.select();
-                }
-            }
-        });
+    useHotkeys('/', (event: KeyboardEvent) => {
+        event.preventDefault();
+        inputSearch.current?.focus();
+        inputSearch.current?.select();
     }, []);
 
     const toc = searchParams.get('toc');
     const [strSearch, setStrSearch] = React.useState<string>(toc?toc:'');
-    const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         switch(event.key) {
             case 'Enter': navigate('/boards?toc=' + strSearch); break;
             case 'Escape': setStrSearch(''); break;
             default: break;
         }
     }
-    const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setStrSearch(event.target.value);
     }
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box component='header' sx={{ flexGrow: 1 }}>
 
             <Drawer
                 anchor='left'
@@ -238,8 +233,8 @@ const Header = () => {
                             placeholder="Search…"
                             inputProps={{ 'aria-label': 'search' }}
                             value={strSearch}
-                            onChange={handleChangeSearch}
-                            onKeyDown={handleSearch}
+                            onChange={handleSearchChange}
+                            onKeyDown={handleSearchKeyDown}
                         />
                     </Search>
 
