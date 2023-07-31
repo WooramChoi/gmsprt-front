@@ -12,8 +12,8 @@ passport.deserializeUser(function(user, done) {
 });
 
 passport.use(new GithubStrategy({
-        clientID: 'b0dd59d6a6d51a4f9a91',
-        clientSecret: '0c97a3cf9ebc9b2d77cf25571e541c795fb1c876',
+        clientID: '',
+        clientSecret: '',
         callbackURL: (process.env.LOCATION_ORIGIN || 'http://127.0.0.1:3000') + '/login/oauth2/code/github'
     },
     function(accessToken, refreshToken, profile, done) {
@@ -22,8 +22,8 @@ passport.use(new GithubStrategy({
 ));
 
 passport.use(new GoogleStrategy({
-        clientID: '958383583142-dgnt2ae153rgc6ah8leq7fcnqraiafr7.apps.googleusercontent.com',
-        clientSecret: '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',
+        clientID: '',
+        clientSecret: '',
         callbackURL: (process.env.LOCATION_ORIGIN || 'http://127.0.0.1:3000') + '/login/oauth2/code/google'
     },
     function(accessToken, refreshToken, profile, done) {
@@ -32,8 +32,8 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.use(new KakaoStrategy({
-        clientID : 'a3058b3fc38998773ab5d70f90061358',
-        clientSecret: 'U6FBllQfM8HXBpbdzp0FLX3hIxvr7AeN', // clientSecret을 사용하지 않는다면 넘기지 말거나 빈 스트링을 넘길 것
+        clientID : '',
+        clientSecret: '', // clientSecret을 사용하지 않는다면 넘기지 말거나 빈 스트링을 넘길 것
         callbackURL : (process.env.LOCATION_ORIGIN || 'http://127.0.0.1:3000') + '/login/oauth2/code/kakao'
     },
     function(accessToken, refreshToken, profile, done){
